@@ -1,0 +1,39 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  display: flex;
+}
+
+.sidebar {
+  background-color: #004080;
+  color: white;
+  width: 220px;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.sidebar h2 {
+  margin-top: 0;
+}
+
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  margin: 15px 0;
+}
+
+.sidebar a:hover {
+  background-color: #0059b3;
+  padding-left: 10px;
+}
+
+.contenido {
+  padding: 30px;
+  flex-grow: 1;
+}
+
+.modulo {
+  margin-top: 20px;
+}

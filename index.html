@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediSchedule - Sistema de Citas Médicas</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --primary-light: #3a5169;
+      --secondary: #3498db;
+      --accent: #e74c3c;
+      --light: #ecf0f1;
+      --dark: #2c3e50;
+      --success: #27ae60;
+      --warning: #f39c12;
+      --danger: #e74c3c;
+      --gray: #95a5a6;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7fa;
+      color: var(--dark);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      padding: 20px 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo i {
+      font-size: 2rem;
+      color: white;
+    }
+    
+    .logo h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+    
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+    }
+    
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+    
+    nav a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .auth-buttons .btn {
+      margin-left: 10px;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+    }
+    
+    .btn-primary {
+      background-color: var(--secondary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-outline {
+      background-color: transparent;
+      border: 2px solid white;
+      color: white;
+    }
+    
+    .btn-outline:hover {
+      background-color: white;
+      color: var(--primary);
+    }
+    
+    .hero {
+      background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      padding: 80px 0;
+      text-align: center;
+    }
+    
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin: 0 auto 30px;
+    }
+    
+    .features {
+      padding: 60px 0;
+      background-color: white;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    
+    .feature-card {
+      background-color: var(--light);
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-icon {
+      font-size: 2.5rem;
+      color: var(--secondary);
+      margin-bottom: 20px;
+    }
+    
+    .feature-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      color: var(--primary);
+    }
+    
+    .appointment-section {
+      padding: 60px 0;
+      background-color: #f8f9fa;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+      color: var(--primary);
+    }
+    
+    .section-title h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    
+    .section-title p {
+      color: var(--gray);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .appointment-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .appointment-form {
+      padding: 40px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--primary);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    .doctor-image {
+      background: url('https://images.unsplash.com/photo-1551601651-bc60f254d532?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+    }
+    
+    footer {
+      background-color: var(--primary);
+      color: white;
+      padding: 40px 0;
+      text-align: center;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+      text-align: left;
+    }
+    
+    .footer-column h3 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      color: white;
+    }
+    
+    .footer-column ul {
+      list-style: none;
+    }
+    
+    .footer-column li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-column a {
+      color: var(--light);
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    
+    .footer-column a:hover {
+      color: var(--secondary);
+    }
+    
+    .copyright {
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-content {
+      background-color: white;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gray);
+    }
+    
+    .modal-title {
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+    
+    /* Dashboard */
+    .dashboard {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      min-height: calc(100vh - 80px);
+    }
+    
+    .sidebar {
+      background-color: var(--primary);
+      color: white;
+      padding: 30px 0;
+    }
+    
+    .sidebar-header {
+      padding: 0 20px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+    }
+    
+    .sidebar-nav ul {
+      list-style: none;
+    }
+    
+    .sidebar-nav li {
+      margin-bottom: 5px;
+    }
+    
+    .sidebar-nav a {
+      display: block;
+      padding: 12px 20px;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    
+    .sidebar-nav a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .sidebar-nav a.active {
+      background-color: var(--secondary);
+    }
+    
+    .sidebar-nav i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .main-content {
+      padding: 30px;
+      background-color: #f5f7fa;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .card-title {
+      font-size: 1.2rem;
+      color: var(--primary);
+    }
+    
+    .appointments-list {
+      list-style: none;
+    }
+    
+    .appointment-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 100px;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .appointment-item:last-child {
+      border-bottom: none;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .badge-success {
+      background-color: #d5f5e3;
+      color: var(--success);
+    }
+    
+    .badge-warning {
+      background-color: #fef5e7;
+      color: var(--warning);
+    }
+    
+    .badge-danger {
+      background-color: #fadbd8;
+      color: var(--danger);
+    }
+    
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.9rem;
+    }
+    
+    .btn-danger {
+      background-color: var(--danger);
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #c0392b;
+    }
+    
+    /* Responsive */
+    @media (max-width: 992px) {
+      .appointment-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .doctor-image {
+        height: 300px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      nav ul {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
+      
+      .auth-buttons {
+        margin-top: 20px;
+      }
+      
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+      
+      .sidebar {
+        display: none;
+      }
+      
+      .appointment-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container header-content">
+      <div class="logo">
+        <i class="fas fa-calendar-check"></i>
+        <h1>MediSchedule</h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#features">Funcionalidades</a></li>
+          <li><a href="#appointment">Agendar Cita</a></li>
+          <li><a href="#about">Acerca de</a></li>
+          <li><a href="#contact">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="auth-buttons">
+        <button class="btn btn-outline" id="loginBtn">Iniciar Sesión</button>
+        <button class="btn btn-primary" id="registerBtn">Registrarse</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h2>Sistema de Agendamiento de Citas Médicas</h2>
+      <p>Gestiona tus citas médicas de forma rápida y sencilla, con confirmación en tiempo real y notificaciones automáticas.</p>
+      <button class="btn btn-primary">Agendar una cita</button>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-title">
+        <h2>Nuestras Funcionalidades</h2>
+        <p>Descubre cómo nuestro sistema puede mejorar tu experiencia en la gestión de citas médicas</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h3>Agendamiento en Tiempo Real</h3>
+          <p>Consulta la disponibilidad de los médicos y agenda tu cita al instante, sin esperas ni intermediarios.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-calendar-times"></i>
+          </div>
+          <h3>Cancelación Inmediata</h3>
+          <p>Cancelar o reprogramar tu cita es tan fácil como hacer clic en un botón, liberando el horario para otros pacientes.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-bell"></i>
+          </div>
+          <h3>Notificaciones Automáticas</h3>
+          <p>Recibe confirmaciones y recordatorios por correo electrónico o SMS para no olvidar tu cita.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Appointment Section -->
+  <section class="appointment-section" id="appointment">
+    <div class="container">
+      <div class="section-title">
+        <h2>Agenda tu Cita Médica</h2>
+        <p>Selecciona al especialista y el horario que mejor se adapte a tus necesidades</p>
+      </div>
+      <div class="appointment-container">
+        <div class="appointment-form">
+          <form id="appointmentForm">
+            <div class="form-group">
+              <label for="specialty">Especialidad Médica</label>
+              <select id="specialty" class="form-control" required>
+                <option value="">Selecciona una especialidad</option>
+                <option value="general">Medicina General</option>
+                <option value="pediatrics">Pediatría</option>
+                <option value="cardiology">Cardiología</option>
+                <option value="dermatology">Dermatología</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="doctor">Médico</label>
+              <select id="doctor" class="form-control" required>
+                <option value="">Selecciona un médico</option>
+                <option value="dr-torres">Dra. Ana Torres</option>
+                <option value="dr-perez">Dr. Juan Pérez</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="date">Fecha</label>
+                <input type="date" id="date" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="time">Hora</label>
+                <input type="time" id="time" class="form-control" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="notes">Notas adicionales</label>
+              <textarea id="notes" class="form-control" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Confirmar Cita</button>
+          </form>
+        </div>
+        <div class="doctor-image"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3>MediSchedule</h3>
+          <p>Sistema de agendamiento de citas médicas en tiempo real para clínicas y hospitales.</p>
+        </div>
+        <div class="footer-column">
+          <h3>Enlaces Rápidos</h3>
+          <ul>
+            <li><a href="#features">Funcionalidades</a></li>
+            <li><a href="#appointment">Agendar Cita</a></li>
+            <li><a href="#about">Acerca de</a></li>
+            <li><a href="#contact">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Contacto</h3>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> biosyn</li>
+            <li><i class="fas fa-phone"></i> +57 301 507595</li>
+            <li><i class="fas fa-envelope"></i> rosamelanoiet@gmail.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2025 MediSchedule. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Login Modal -->
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h3 class="modal-title">Iniciar Sesión</h3>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="loginEmail">Correo Electrónico</label>
+          <input type="email" id="loginEmail" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Contraseña</label>
+          <input type="password" id="loginPassword" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div class="modal" id="registerModal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h3 class="modal-title">Registrarse</h3>
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="registerName">Nombre Completo</label>
+          <input type="text" id="registerName" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="registerEmail">Correo Electrónico</label>
+          <input type="email" id="registerEmail" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="registerPassword">Contraseña</label>
+          <input type="password" id="registerPassword" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="registerConfirmPassword">Confirmar Contraseña</label>
+          <input type="password" id="registerConfirmPassword" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="registerType">Tipo de Usuario</label>
+          <select id="registerType" class="form-control" required>
+            <option value="patient">Paciente</option>
+            <option value="receptionist">Recepcionista</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Registrarse</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard (hidden by default) -->
+  <div id="dashboard" style="display: none;">
+    <div class="dashboard">
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h3>MediSchedule</h3>
+          <p id="userEmail"></p>
+        </div>
+        <nav class="sidebar-nav">
+          <ul>
+            <li><a href="#" class="active"><i class="fas fa-calendar-alt"></i> Mis Citas</a></li>
+            <li><a href="#"><i class="fas fa-user-md"></i> Médicos</a></li>
+            <li><a href="#"><i class="fas fa-bell"></i> Notificaciones</a></li>
+            <li><a href="#"><i class="fas fa-user-cog"></i> Configuración</a></li>
+            <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="main-content">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Mis Próximas Citas</h4>
+            <button class="btn btn-primary" id="newAppointmentBtn">Nueva Cita</button>
+          </div>
+          <ul class="appointments-list">
+            <li class="appointment-item">
+              <div>
+                <strong>Dra. Ana Torres</strong>
+                <p>Medicina General</p>
+              </div>
+              <div>15 Junio 2025</div>
+              <div>10:00 AM</div>
+              <div>
+                <span class="badge badge-success">Confirmada</span>
+                <button class="btn btn-danger btn-sm">Cancelar</button>
+              </div>
+            </li>
+            <li class="appointment-item">
+              <div>
+                <strong>Dr. Juan Pérez</strong>
+                <p>Pediatría</p>
+              </div>
+              <div>20 Junio 2025</div>
+              <div>2:30 PM</div>
+              <div>
+                <span class="badge badge-warning">Pendiente</span>
+                <button class="btn btn-danger btn-sm">Cancelar</button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Modal functionality
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
+    const loginModal = document.getElementById('loginModal');
+    const registerModal = document.getElementById('registerModal');
+    const closeButtons = document.querySelectorAll('.close-modal');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const dashboard = document.getElementById('dashboard');
+    const mainContent = document.querySelector('header, section, footer');
+    
+    // Show modals
+    loginBtn.addEventListener('click', () => {
+      loginModal.style.display = 'flex';
+    });
+    
+    registerBtn.addEventListener('click', () => {
+      registerModal.style.display = 'flex';
+    });
+    
+    // Close modals
+    closeButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        loginModal.style.display = 'none';
+        registerModal.style.display = 'none';
+      });
+    });
+    
+    // Close when clicking outside
+    window.addEventListener('click', (e) => {
+      if (e.target === loginModal) {
+        loginModal.style.display = 'none';
+      }
+      if (e.target === registerModal) {
+        registerModal.style.display = 'none';
+      }
+    });
+    
+    // Form submissions
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Simulate login
+      const email = document.getElementById('loginEmail').value;
+      document.getElementById('userEmail').textContent = email;
+      
+      // Hide main content and show dashboard
+      mainContent.style.display = 'none';
+      dashboard.style.display = 'block';
+      loginModal.style.display = 'none';
+    });
+    
+    document.getElementById('registerForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Simulate registration
+      const email = document.getElementById('registerEmail').value;
+      document.getElementById('userEmail').textContent = email;
+      
+      // Hide main content and show dashboard
+      mainContent.style.display = 'none';
+      dashboard.style.display = 'block';
+      registerModal.style.display = 'none';
+    });
+    
+    // Logout functionality
+    logoutBtn.addEventListener('click', () => {
+      // Show main content and hide dashboard
+      mainContent.style.display = 'block';
+      dashboard.style.display = 'none';
+    });
+    
+    // New appointment button
+    document.getElementById('newAppointmentBtn').addEventListener('click', () => {
+      // Scroll to appointment section
+      document.getElementById('appointment').scrollIntoView({ behavior: 'smooth' });
+      
+      // Show main content and hide dashboard
+      mainContent.style.display = 'block';
+      dashboard.style.display = 'none';
+    });
+    
+    // Appointment form submission
+    document.getElementById('appointmentForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Cita agendada exitosamente. Recibirás una confirmación por correo electrónico.');
+      // Reset form
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>
